@@ -1,5 +1,6 @@
-package ch.com.findrealestate.features.base
+package ch.com.findrealestate.base
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
@@ -14,20 +15,22 @@ import kotlinx.coroutines.launch
 abstract class FlowReduxViewModel<S : Any, A : Any, N : Any> constructor(
     private val stateMachine: FlowReduxStateMachine<S, A, N>
 ) : ViewModel() {
-    private val stateflow = MutableStateFlow(stateMachine.initialState)
+    protected val stateflow = MutableStateFlow(stateMachine.initialState)
 
-    var navigationValue: N? = null
+    var navigationValue: N? = null // current navigation value
 
     init {
         stateMachine.initStore()
         viewModelScope.launch {
             launch {
                 stateMachine.state.collect {
+                    Log.d("FlowReduxVM", "State collect $it")
                     stateflow.value = it
                 }
             }
             launch {
-                stateMachine.navigation.collect {
+                stateMachine.navigation().collect {
+                    Log.d("FlowReduxVM", "Navigation collect $it")
                     navigationValue = it
                     handleNavigation(it)
                 }
@@ -38,8 +41,7 @@ abstract class FlowReduxViewModel<S : Any, A : Any, N : Any> constructor(
     abstract fun handleNavigation(navigation: N)
 
     @Composable
-    fun rememberState() =
-        stateflow.collectAsState()
+    fun rememberState() = stateflow.collectAsState()
 
     fun dispatch(action: A) = viewModelScope.launch {
         stateMachine.dispatch(action = action)

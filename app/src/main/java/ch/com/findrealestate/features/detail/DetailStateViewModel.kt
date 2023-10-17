@@ -1,7 +1,6 @@
 package ch.com.findrealestate.features.detail
 
-import android.util.Log
-import ch.com.findrealestate.features.base.FlowReduxViewModel
+import ch.com.findrealestate.base.FlowReduxViewModel
 import ch.com.findrealestate.features.detail.redux.DetailAction
 import ch.com.findrealestate.features.detail.redux.DetailNavigation
 import ch.com.findrealestate.features.detail.redux.DetailState
@@ -17,19 +16,24 @@ class DetailStateViewModel @Inject constructor(stateMachine: DetailStateMachine)
     FlowReduxViewModel<DetailState, DetailAction, DetailNavigation>(stateMachine) {
 
     private lateinit var navigator: DetailNavigator
-    fun setNavigator(navigator: DetailNavigator){
+    fun setNavigator(navigator: DetailNavigator) {
         this.navigator = navigator
     }
+
+    // this way helps to prevent reload data when re-enter composition
+    fun startLoadData(propertyId: String) {
+        if (stateflow.value == DetailState.Init)
+            dispatch(DetailAction.LoadDetailData(propertyId))
+    }
+
     override fun handleNavigation(navigation: DetailNavigation) {
-        // this help to prevent production crash, as we get crash in testing first
-        if(!this::navigator.isInitialized){
-            error("DetailNavigator is not initialized yet ")
+        // this helps to know if navigator is not initialized
+        if (!this::navigator.isInitialized) {
+            error("DetailNavigator is not initialized")
         }
-        when(navigation){
+        when (navigation) {
             is DetailNavigation.OpenPropertyWebsite -> navigator.navigateOpenChromeTab(navigation.url)
-            else -> {
-                Log.i("DetailVM", "No navigation, just stay Detail screen")
-            }
+            else -> {}
         }
     }
 }

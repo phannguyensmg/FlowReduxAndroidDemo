@@ -30,7 +30,7 @@ fun DetailScreen(propertyId: String?, navigator: DetailNavigator) {
     val detailState by viewModel.rememberState()
 
     LaunchedEffect(Unit) {
-        propertyId?.let { viewModel.dispatch(DetailAction.LoadDetailData(it)) }
+        propertyId?.let { viewModel.startLoadData(it) }
     }
 
     Scaffold(
@@ -84,7 +84,6 @@ fun DetailScreen(propertyId: String?, navigator: DetailNavigator) {
                     )
                 )
             },
-            //  sheetState = modalSheetState,
             shape = RoundedCornerShape(
                 topStart = 12.dp,
                 topEnd = 12.dp
@@ -100,7 +99,6 @@ fun DetailScreen(propertyId: String?, navigator: DetailNavigator) {
                 Text(text = "Display some property info")
                 Button(
                     onClick = {
-                        // coroutineScope.launch { modalSheetState.hide() }
                         viewModel.dispatch(DetailAction.ToggleShowPropertyInfoBottomSheet(false))
                     }
                 ) {
@@ -116,15 +114,12 @@ fun DetailScreen(propertyId: String?, navigator: DetailNavigator) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
-                    // Handle start event
                     Log.d("Detail", "Activity resume")
                     viewModel.dispatch(DetailAction.ScreenResumed(viewModel.navigationValue))
                 }
                 Lifecycle.Event.ON_STOP -> {
-                    // Handle stop event
                     Log.d("Detail", "Activity Stop")
                 }
-                // Handle other lifecycle events as needed
                 else -> {
                     Log.d("Detail", "Activity in other states")
                 }

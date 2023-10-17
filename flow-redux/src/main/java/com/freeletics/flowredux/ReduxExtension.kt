@@ -1,14 +1,11 @@
 package com.freeletics.flowredux
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import android.util.Log
+import androidx.compose.runtime.*
 import androidx.compose.runtime.produceState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlin.reflect.KClass
 
 inline fun <A : Any, reified SubA : A> Flow<A>.ofType(clz: KClass<SubA>): Flow<SubA> =
@@ -37,15 +34,4 @@ fun <T> Flow<T>.throttleDistinct(periodMillis: Long): Flow<T> {
     }
 }
 
-@ExperimentalCoroutinesApi
-@FlowPreview
-@Composable
-fun <S : Any, A : Any, N : Any> FlowReduxStateMachine<S, A, N>.rememberNavigation(): State<N?> {
-    return produceState<N?>(initialValue = null, this) {
-        navigation.collect {
-            lastNavigationValue = it
-            value = it
-        }
-    }
-}
 
