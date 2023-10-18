@@ -34,6 +34,6 @@
 # More info about this demo
 This demo shows how to apply FlowRedux in the Homegate interview assessment test. You will find 2 features: home (result list) and detail in the app module. Each feature has its own state machine where hold the logic of the feature. I also applied CLEAN for data and domain layer.
 
-In the **main** branch, i implemented the basic redux with **FlowReduxStateMachine** contains: reducer, side effects. I also defined actions, state used in the state machine for each feature.
+In the **main** branch, i implemented the basic state machine with **FlowReduxStateMachine** contains: reducer, side effects. I also defined actions, state used in the state machine for each feature.
 
 In the **composite-redux** branch, i implemented a composite state machine where contains sub state machine. In this demo, it displays similar properties in the result list (home screen). The logic of similar properties component is separated into sub state machine and plug into the composite state machine. In this way, it helps us separate component's logic and easier to maintain.
