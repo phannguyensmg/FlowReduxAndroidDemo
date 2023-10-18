@@ -32,8 +32,8 @@
 ### You can find more info here [RxRedux](https://github.com/freeletics/RxRedux). This is redux implementation based on RxJava. And FlowRedux is redux implementation base on coroutine flow, it has the same components, characteristics as RxRedux
 
 # More info about this demo
-This demo how to apply FlowRedux into the Homegate interview assessment test. You will find 2 features: home screen and detail screen in app module. Each screen has its own state machine where hold the logic of this feature. I also applied CLEAN for data and domain layer.
+This demo shows how to apply FlowRedux in the Homegate interview assessment test. You will find 2 features: home (result list) and detail in the app module. Each feature has its own state machine where hold the logic of the feature. I also applied CLEAN for data and domain layer.
 
-In the main branch, i implemented the basic redux with **FlowReduxStateMachine** contains: reducer, side effects. For home and detail features, i define actions, state for their state machine.
+In the **main** branch, i implemented the basic redux with **FlowReduxStateMachine** contains: reducer, side effects. I also defined actions, state used in the state machine for each feature.
 
-In the composite-redux branch, i implemented a composite state machine where contains sub state machine. For example, we want to display similar properties in the result list. the logic of similar properties component should be separated into sub state machine and plug into the composite state machine. In this way, it helps us separate component's logic and easier to maintain.
+In the **composite-redux** branch, i implemented a composite state machine where contains sub state machine. In this demo, it displays similar properties in the result list (home screen). The logic of similar properties component is separated into sub state machine and plug into the composite state machine. In this way, it helps us separate component's logic and easier to maintain.
